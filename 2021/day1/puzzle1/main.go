@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/EdgeJay/adventofcode/2021/common/utils/files"
+	"github.com/EdgeJay/adventofcode/common/utils/files"
 )
 
 func calculate(arr []string) (count int) {
