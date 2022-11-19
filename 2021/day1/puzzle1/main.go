@@ -2,23 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"strconv"
-	"strings"
+
+	"github.com/EdgeJay/adventofcode/2021/common/utils/files"
 )
-
-func readFile() []string {
-	dat, err := os.ReadFile("./input.txt")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	str := string(dat)
-	arr := strings.Split(str, "\n")
-
-	return arr
-}
 
 func calculate(arr []string) (count int) {
 	var prevNum int = 99999
@@ -37,7 +24,7 @@ func calculate(arr []string) (count int) {
 }
 
 func main() {
-	arr := readFile()
+	arr := files.ReadInputsFile("./input.txt")
 	count := calculate(arr)
 	fmt.Printf("%d\n", count)
 }
