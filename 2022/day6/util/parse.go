@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/thoas/go-funk"
 )
@@ -28,4 +29,14 @@ func ParseLine(line string, markerSize int) {
 	}
 
 	fmt.Println(string(t), afterPos)
+}
+
+func ParseLineImproved(line string, markerSize int) {
+	for n := 0; n < len(line); n++ {
+		str := line[n : n+markerSize]
+		if len(funk.UniqString(strings.Split(str, ""))) == markerSize {
+			fmt.Println(str, n+markerSize)
+			break
+		}
+	}
 }

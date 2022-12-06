@@ -9,7 +9,7 @@ const markerSize = 4
 
 func calculate(lines []string) {
 	for _, ln := range lines {
-		util.ParseLine(ln, markerSize)
+		util.ParseLineImproved(ln, markerSize)
 	}
 }
 
