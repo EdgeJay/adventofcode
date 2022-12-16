@@ -148,7 +148,7 @@ func (p *Position) MoveNextTo(target *Position) {
 			}
 		}
 
-		fmt.Printf("total visited positions: %d\n", len(p.VisitedPositions))
+		// fmt.Printf("total visited positions: %d\n", len(p.VisitedPositions))
 	} else {
 		fmt.Printf("%s already adjacent to %s\n", p.Name, target.Name)
 	}
