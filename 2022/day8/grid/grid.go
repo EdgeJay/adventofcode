@@ -14,6 +14,14 @@ type SearchOptions struct {
 	direction   string
 }
 
+type UpdateScenicOptions struct {
+	heightLimit  int
+	row          int
+	col          int
+	direction    string
+	visibleTrees int
+}
+
 const (
 	DIR_UP    = "up"
 	DIR_DOWN  = "down"
@@ -104,6 +112,78 @@ func (g *Grid) IsTreeVisible(row, col int) bool {
 		})
 
 	return results
+}
+
+func (g *Grid) GetTreeScenicScore(row, col int) int {
+	if row == 0 || col == 0 {
+		return 0
+	}
+
+	if row+1 >= len(*g) || col+1 >= len((*g)[0]) {
+		return 0
+	}
+
+	heightLimit := g.GetTreeHeight(row, col)
+	results := g.UpdateScenicScore(&UpdateScenicOptions{
+		heightLimit:  heightLimit,
+		row:          row,
+		col:          col,
+		direction:    DIR_UP,
+		visibleTrees: 0,
+	}) *
+		g.UpdateScenicScore(&UpdateScenicOptions{
+			heightLimit:  heightLimit,
+			row:          row,
+			col:          col,
+			direction:    DIR_DOWN,
+			visibleTrees: 0,
+		}) *
+		g.UpdateScenicScore(&UpdateScenicOptions{
+			heightLimit:  heightLimit,
+			row:          row,
+			col:          col,
+			direction:    DIR_LEFT,
+			visibleTrees: 0,
+		}) *
+		g.UpdateScenicScore(&UpdateScenicOptions{
+			heightLimit:  heightLimit,
+			row:          row,
+			col:          col,
+			direction:    DIR_RIGHT,
+			visibleTrees: 0,
+		})
+
+	return results
+}
+
+func (g *Grid) UpdateScenicScore(opts *UpdateScenicOptions) int {
+	treeRow := opts.row
+	treeCol := opts.col
+	switch opts.direction {
+	case DIR_UP:
+		treeRow -= 1
+	case DIR_DOWN:
+		treeRow += 1
+	case DIR_LEFT:
+		treeCol -= 1
+	case DIR_RIGHT:
+		treeCol += 1
+	}
+
+	if g.IsOutOfBounds(treeRow, treeCol) {
+		return opts.visibleTrees
+	}
+
+	opts.visibleTrees += 1
+	treeHeight := g.GetTreeHeight(treeRow, treeCol)
+
+	if opts.heightLimit > treeHeight {
+		opts.row = treeRow
+		opts.col = treeCol
+		return g.UpdateScenicScore(opts)
+	}
+
+	return opts.visibleTrees
 }
 
 func (g *Grid) IsOutOfBounds(row, col int) bool {
