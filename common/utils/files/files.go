@@ -17,3 +17,14 @@ func ReadInputsFile(path string) []string {
 
 	return arr
 }
+
+func ReadInputsFileRaw(path string) string {
+	dat, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	str := string(dat)
+
+	return str
+}
