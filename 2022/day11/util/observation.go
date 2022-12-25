@@ -50,7 +50,12 @@ func (m *Monkey) ObserveNextItem() *BagItem {
 	a := m.GetOpFuncParamValue(m.OperationFuncParams[0], bagItem)
 	b := m.GetOpFuncParamValue(m.OperationFuncParams[2], bagItem)
 
-	bagItem.WorryLevel = int(math.Floor(float64(m.OperationFunc(a, b)) / 3))
+	reliefLevel := m.Observation.ReliefLevel
+	if reliefLevel > 0 {
+		bagItem.WorryLevel = int(math.Floor(float64(m.OperationFunc(a, b)) / float64(reliefLevel)))
+	} else {
+		bagItem.WorryLevel = m.OperationFunc(a, b)
+	}
 	m.TestFunc(bagItem)
 
 	m.ObservationCount++
@@ -179,11 +184,13 @@ func NewMonkey(data string, ob *Observation) *Monkey {
 type Observation struct {
 	Monkeys     []*Monkey
 	RoundNumber int
+	ReliefLevel int
 }
 
-func NewObservation(monkeys []string) *Observation {
+func NewObservation(monkeys []string, reliefLevel int) *Observation {
 	ob := &Observation{
 		RoundNumber: 0,
+		ReliefLevel: reliefLevel,
 	}
 
 	m := make([]*Monkey, len(monkeys))

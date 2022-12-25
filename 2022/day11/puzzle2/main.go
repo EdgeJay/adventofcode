@@ -10,14 +10,17 @@ import (
 
 func parseNotes(lines string) *util.Observation {
 	monkeys := strings.Split(lines, "\n\n")
-	ob := util.NewObservation(monkeys, 3)
+	ob := util.NewObservation(monkeys, 0)
 	return ob
 }
 
 func calculate(ob *util.Observation) {
-	for n := 0; n < 20; n++ {
+	for n := 0; n < 10000; n++ {
 		ob.NextRound()
 	}
+
+	fmt.Println(ob.GetMonkeybyID(0).ObservationCount)
+	fmt.Println(ob.GetMonkeybyID(3).ObservationCount)
 
 	monkeys := ob.GetMonkeysSortedByObservationCount()
 	total := monkeys[0].ObservationCount * monkeys[1].ObservationCount
@@ -25,8 +28,8 @@ func calculate(ob *util.Observation) {
 }
 
 func main() {
-	lines := files.ReadInputsFileRaw("./input.txt")
-	// lines := files.ReadInputsFileRaw("./test.txt")
+	// lines := files.ReadInputsFileRaw("./input.txt")
+	lines := files.ReadInputsFileRaw("./test.txt")
 	observation := parseNotes(lines)
 	calculate(observation)
 }
