@@ -96,6 +96,18 @@ func (g *Grid) GetShortestPathSteps() int {
 	return g.FindShortestPath(g.StartLocation, g.EndLocation)
 }
 
+func (g *Grid) GetNodesWithElevationAt(level int) []*Node {
+	nodes := []*Node{}
+	for _, ln := range g.Nodes {
+		for _, node := range ln {
+			if node.Elevation == level {
+				nodes = append(nodes, node)
+			}
+		}
+	}
+	return nodes
+}
+
 func MakeGrid(input []string) *Grid {
 	grid := &Grid{}
 	nodes := make([][]*Node, len(input))
