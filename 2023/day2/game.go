@@ -76,3 +76,7 @@ func (g *Game) SetParameters(input string) error {
 func (g *Game) WithinLimits(red, green, blue int) bool {
 	return g.Red <= red && g.Green <= green && g.Blue <= blue
 }
+
+func (g *Game) Power() int {
+	return g.Red * g.Green * g.Blue
+}
