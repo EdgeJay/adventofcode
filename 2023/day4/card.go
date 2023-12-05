@@ -20,18 +20,17 @@ func NewCard(input string) *Card {
 	}
 }
 
-func (c *Card) Calculate() (int, error) {
-
+func (c *Card) parseInput() error {
 	// get card id
 	re, err := regexp.Compile(`^Card\s*(\d+)\s*:(.*)\|(.*)$`)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
 	match := re.FindStringSubmatch(c.Input)
 	num, err := strconv.Atoi(match[1])
 	if err != nil {
-		return 0, err
+		return err
 	}
 
 	c.Id = num
@@ -39,7 +38,7 @@ func (c *Card) Calculate() (int, error) {
 	// get winning numbers
 	re2, err := regexp.Compile(`\s+`)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
 	arr := re2.Split(match[2], -1)
@@ -63,6 +62,15 @@ func (c *Card) Calculate() (int, error) {
 
 	c.CardNumbers = nums
 
+	return nil
+}
+
+func (c *Card) Calculate() (int, error) {
+
+	if err := c.parseInput(); err != nil {
+		return 0, err
+	}
+
 	// Calculate winning points
 	count := -1
 
@@ -72,7 +80,29 @@ func (c *Card) Calculate() (int, error) {
 		}
 	}
 
+	if count == -1 {
+		return 0, nil
+	}
+
 	result := int(math.Pow(2, float64(count)))
 
 	return result, nil
+}
+
+func (c *Card) NumberOfCardsWon() (int, error) {
+
+	if err := c.parseInput(); err != nil {
+		return 0, err
+	}
+
+	// Calculate winning points
+	count := 0
+
+	for _, num := range c.CardNumbers {
+		if slices.Contains(c.WinningNumbers, num) {
+			count++
+		}
+	}
+
+	return count, nil
 }
