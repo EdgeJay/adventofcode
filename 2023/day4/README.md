@@ -4,3 +4,4 @@
 
 1. Puzzle 1 was straightforward, can be solved easily with Regexp.
 1. Puzzle 2 was good practice for writing recursive functions.
+3. Processing time could have been shortened with go routines.
